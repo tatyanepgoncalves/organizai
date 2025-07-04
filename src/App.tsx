@@ -1,42 +1,27 @@
-import { Button } from "./components/ui/button";
-import { Trash, Check, X } from "lucide-react";
-import Form from "./components/Form";
+import { useTodo } from "./hooks/useTodo"
+import TaskList from "./components/TaskList";
+import TasksFilter from "./components/TasksFilter";
+import Footer from "./components/Footer";
+import Modal from "./components/Modal";
 
 export function App() {
+  const { taskList, setTaskList, toggleTask, totalTasks, remainingTasks } = useTodo()
+
+
   return (
-    <main className="p-8 max-w-4xl mx-auto">
-      <header className="p-4">
-        <h1 className="font-medium text-center text-2xl">OrganizAi</h1>
+    <div className="mx-auto space-y-2 bg-zinc-50">
+      <header className="p-4 max-w-4xl mx-auto md:max-w-7xl md:relative md:p-8">
+        <h1 className="font-bold text-center text-2xl md:text-4xl">OrganizAi</h1>
+        <Modal />
       </header>
+      <main className="p-4 max-w-4xl mx-auto md:max-w-7xl space-y-5">
 
-      <Form />
+        <TasksFilter taskList={taskList} setTaskList={setTaskList} />
+        <TaskList taskList={taskList} toggleTask={toggleTask} />
+        
 
-      <section className="space-y-4">
-        {Array.from({ length: 10 }).map((_, i) => {
-          return (
-            <div
-              key={i}
-              className="flex items-center justify-between p-4 rounded-sm"
-            >
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold text-lg">Tarefa {i}</h3>
-                <span className="">Categoria {i}</span>
-                <span className="">Pendente | Completa</span>
-              </div>
-
-              <div className="space-x-2">
-                <Button className="cursor-pointer" variant={"ghost"}>
-                  <X className="w-4 h-4" />
-                  <Check className="w-4 h-4" />
-                </Button>
-                <Button className="cursor-pointer" variant={"destructive"}>
-                  <Trash className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          );
-        })}
-      </section>
-    </main>
+      </main>
+      <Footer totalTasks={totalTasks} remainingTasks={remainingTasks} />
+    </div>
   );
 }
